@@ -104,8 +104,8 @@ Selling VPN access through WHMCS? Use the official module:
 - **API Reference**: [https://puqvpncp.com/api/](https://puqvpncp.com/api/)
 - **Community Forum**: [https://community.puqcloud.com/](https://community.puqcloud.com/)
 - **Support Tickets**: [https://puqcloud.com/submitticket.php](https://puqcloud.com/submitticket.php)
-- **Author**: Ruslan Polovyi ([PUQ sp. z o.o.](https://puqcloud.com))
+- **Author**: Ruslan Polovyi ([PUQ Software](https://puqcloud.com))
 
 ---
 
-&copy; 2024–2026 PUQ sp. z o.o. All rights reserved.
+&copy; 2024–2026 PUQ Software. All rights reserved.
