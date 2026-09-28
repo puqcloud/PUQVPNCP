@@ -142,27 +142,69 @@ apt install wireguard wireguard-tools
 
 ---
 
-## AmneziaWG Interface Not Created
+## AmneziaWG Interface Not Created or Module Not Loaded
 
-### Check if AmneziaWG kernel module is loaded
+### 1. Check DKMS status and kernel module
 
 ```bash
+# Check DKMS compilation status
+dkms status
+# Should show: amneziawg/..., ...: installed
+
+# Check if the kernel module is currently loaded
+lsmod | grep amneziawg
+
+# Try loading the module manually
 modprobe amneziawg
+```
+
+### 2. Module build failed or missing (Debian / Ubuntu)
+
+On **Debian**, DKMS compilation fails if `linux-headers-$(uname -r)` and build tools are missing. To fix:
+
+```bash
+# Install kernel headers and build tools for the running kernel
+apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
+
+# Reconfigure and recompile the DKMS module
+dpkg-reconfigure amneziawg-dkms
+
+# Load the compiled module into the kernel
+modprobe amneziawg
+
+# Verify
 lsmod | grep amneziawg
 ```
 
-### Check AmneziaWG tools
+### 3. Missing repository or packages
+
+**Debian (11 / 12 / 13):**
+```bash
+apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
+mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+**Ubuntu (22.04 / 24.04 LTS):**
+```bash
+add-apt-repository -y ppa:amnezia/ppa
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+### 4. Check AmneziaWG tools
 
 ```bash
 awg --version
 ```
 
-If missing, install via the official repository:
+### 5. DNS resolution error when using awg-quick manually
 
+If `awg-quick up awg0` fails with `resolvconf: command not found` on Debian:
 ```bash
-mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
-apt update && apt install -y amneziawg-dkms amneziawg-tools
+apt-get install -y openresolv
 ```
 
 ---

@@ -17,22 +17,77 @@
 
 ### Installation
 
-AmneziaWG is distributed via the official Amnezia PPA repository:
+AmneziaWG requires the kernel module (`amneziawg-dkms`) and CLI tools (`amneziawg-tools`). Choose the instructions corresponding to your operating system:
 
-**Debian / Ubuntu (Universal):**
+#### Debian (11 / 12 / 13)
+
+> **Important for Debian:** AmneziaWG is compiled on your server as a kernel module via DKMS. On Debian, DKMS requires kernel headers (`linux-headers-$(uname -r)`) and build tools (`build-essential`). Without them, the DKMS build will fail.
+
+Copy and run the complete installation block as root:
+
+```bash
+# 1. Install build tools, DKMS, and current kernel headers
+apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
+
+# 2. Add the official Amnezia PPA repository keyring and source
+mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+
+# 3. Install the DKMS module and tools
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+
+# 4. Load the kernel module
+modprobe amneziawg
+```
+
+#### Ubuntu (22.04 / 24.04 LTS)
+
+**Option 1: Using `add-apt-repository` (standard):**
+
+```bash
+add-apt-repository -y ppa:amnezia/ppa
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+**Option 2: Using GPG keyring (minimal systems):**
+
 ```bash
 mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
 echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
-apt-get update
-apt-get install -y amneziawg-dkms amneziawg-tools
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
 ```
 
-**Ubuntu (alternative):**
+#### Verification
+
+Verify that the module has been compiled and loaded into the kernel:
+
 ```bash
-add-apt-repository -y ppa:amnezia/ppa
-apt-get update
-apt-get install -y amneziawg-dkms amneziawg-tools
+# Check DKMS compilation status (should show 'installed')
+dkms status
+
+# Check that the kernel module is active
+lsmod | grep amneziawg
+
+# Check that the awg CLI utility is available
+awg --version
 ```
+
+#### Troubleshooting DKMS Compilation & Kernel Updates
+
+If `dkms status` shows `added` or `error`, or if you upgrade the system kernel:
+
+```bash
+apt-get install -y build-essential dkms linux-headers-$(uname -r)
+dpkg-reconfigure amneziawg-dkms
+modprobe amneziawg
+```
+
+> **Note on DNS / resolvconf:** If you run `awg-quick` manually and receive `/usr/bin/awg-quick: resolvconf: command not found`, install `openresolv`:
+> ```bash
+> apt-get install -y openresolv
+> ```
 
 Navigate to **VPN Servers > AmneziaWG** to access AmneziaWG management. The page provides 5 tabs: Overview, Networks, Settings, Online, and Client Profiles.
 

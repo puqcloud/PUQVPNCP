@@ -51,13 +51,49 @@ apt update && apt install -y wireguard wireguard-tools openvpn easy-rsa \
 
 #### Optional: AmneziaWG (Anti-Censorship DPI Bypass)
 
-To enable AmneziaWG, add the official repository and install the kernel module and tools:
+To enable AmneziaWG, install the kernel module and tools for your distribution:
+
+**Debian (11 / 12 / 13):**
+
+> On Debian, compiling the kernel module via DKMS requires kernel headers (`linux-headers-$(uname -r)`) and build tools. Install them before or alongside the module:
+
+```bash
+apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
+mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+**Ubuntu (22.04 / 24.04 LTS):**
+
+```bash
+add-apt-repository -y ppa:amnezia/ppa
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+*Alternative on Ubuntu (without `add-apt-repository`):*
 
 ```bash
 mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
 echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
-apt update && apt install -y amneziawg-dkms amneziawg-tools
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
 ```
+
+**Verify AmneziaWG installation:**
+
+```bash
+dkms status            # Should output: amneziawg/..., ...: installed
+lsmod | grep amneziawg # Should display loaded kernel module
+awg --version          # Should display awg tools version
+```
+
+> **Tip:** If the kernel module failed to compile or after a kernel update, run:
+> ```bash
+> apt-get install -y build-essential dkms linux-headers-$(uname -r) && dpkg-reconfigure amneziawg-dkms && modprobe amneziawg
+> ```
 
 ### Step 3: Install PUQVPNCP
 
