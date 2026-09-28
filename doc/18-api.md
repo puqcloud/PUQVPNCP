@@ -166,10 +166,10 @@ curl -sk -X POST https://vpn.example.com/api/v1/system/reload \
 
 The API enables integration with:
 
-- **WHMCS** — automated VPN provisioning for hosting clients
-- **Billing systems** — create/suspend/delete clients via API
-- **Monitoring systems** — pull metrics and status
-- **Custom portals** — build your own user-facing VPN management interface
-- **Automation scripts** — batch client creation, network management
+- **[Official WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)** — turnkey automated VPN sales and provisioning for web hosting providers (automatic account creation on payment, suspension on overdue invoices, bandwidth shaping, and self-service config/QR delivery in client portal)
+- **Billing Systems** — full client lifecycle automation via REST endpoints (create, suspend, unsuspend, delete clients, adjust bandwidth limits, and fetch usage stats)
+- **Monitoring Systems** — pull metrics and status via `/api/v1/metrics`
+- **Custom Portals** — build your own user-facing VPN management interface
+- **Automation Scripts** — batch client creation, network management, and configuration export
 
 ---

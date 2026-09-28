@@ -151,5 +151,5 @@ Navigate to **About us** in the top navigation bar.
 ![About Us and Support](img/other/06-about-us.png)
 *About Us — licensing information, WHMCS provisioning module integration, and support links*
 
-The About page displays project license limits (up to 50 VPN clients without license, unlimited with license from puqcloud.com), integration options including the official WHMCS provisioning module, and links to documentation and support.
+The About page displays project license limits (up to 50 VPN clients without license, unlimited with license from [puqcloud.com](https://puqcloud.com)), integration options including the official **[PUQVPNCP WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)**, and links to documentation and support.
 

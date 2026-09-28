@@ -16,7 +16,7 @@
 ### How It Works
 
 1. Create networks with different bandwidth limits
-2. Use the **REST API** to provision clients from your billing system (WHMCS, custom)
+2. Use the official **[PUQVPNCP WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)** or custom REST API integration to automate client sales and provisioning
 3. Send **One-Time Links** to customers so they can self-configure their devices
 4. Monitor traffic via **InfluxDB + Grafana** dashboards
 
@@ -144,16 +144,19 @@ WHMCS / Billing ---> PUQVPNCP API ---> VPN Networks
 ### How It Works
 
 1. Each customer gets a dedicated network with their own subnet
-2. The billing system uses the **REST API** to:
+2. Use the official **[PUQVPNCP WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)** or direct REST API calls to:
    - Create networks when a customer signs up
    - Add/remove clients based on subscription
    - Suspend clients on non-payment
    - Delete everything on cancellation
-3. Customers receive **One-Time Links** for self-setup
+3. Customers receive **One-Time Links** for self-setup or download profiles directly from their WHMCS client area
 4. **API Tokens** per customer allow limited self-management
 
+### Turnkey WHMCS Integration
+With the **[PUQVPNCP WHMCS Module](https://puqcloud.com/whmcs-module-puqvpncp.php)**, this entire workflow is 100% automated out of the box — including client account provisioning, suspension, quota enforcement, and config delivery (WireGuard, AmneziaWG, OpenVPN, IKEv2).
+
 ### Key Features Used
-- Full REST API (148+ endpoints) for automation
+- Full REST API (170+ endpoints) for automation
 - Per-network isolation for multi-tenancy
 - One-Time Links for end-user self-service
 - Upstream tunnels for dedicated exit IPs per customer

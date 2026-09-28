@@ -68,4 +68,11 @@
 
 ---
 
+## Commercial Automation & WHMCS
+
+Selling VPN services or integrating with web hosting billing?
+- **[Official PUQVPNCP WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)** — Turnkey billing module that automates client provisioning upon payment, manages suspensions, synchronizes bandwidth shaping and traffic quotas, and delivers config files (WireGuard, AmneziaWG, OpenVPN, IKEv2) directly inside the WHMCS client portal.
+
+---
+
 *Documentation for PUQVPNCP v2.3.0 | [puqcloud.com](https://puqcloud.com)*

@@ -152,6 +152,21 @@ The web interface is organized into dropdown menus:
 
 ---
 
+## WHMCS Billing & Provisioning Automation
+
+Selling VPN services or hosting packages? PUQ Software provides an official provisioning module for WHMCS:
+
+**[PUQVPNCP WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)**
+
+### Key Capabilities:
+- **Instant Automated Provisioning**: Automatically provisions client VPN accounts upon invoice payment.
+- **Lifecycle Management**: Automated suspension on overdue invoices, unsuspension on payment, and termination on cancellation.
+- **Bandwidth Shaping & Traffic Quotas**: Synchronizes download/upload speed limits and traffic transfer limits directly from WHMCS product settings.
+- **Client Area Self-Service**: Customers can view credentials, download WireGuard and OpenVPN configurations, generate obfuscated AmneziaWG profiles, and scan QR codes right from their WHMCS client portal.
+- **Multi-Server & Multi-Network**: Route client accounts to specific PUQVPNCP servers and networks based on WHMCS product configuration.
+
+---
+
 ## License
 
 PUQVPNCP requires an active license. Licenses can be purchased at:

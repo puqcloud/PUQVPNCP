@@ -3,6 +3,10 @@
 
 Clients are VPN accounts assigned to a network. Each client gets a unique IP address, WireGuard keys, OpenVPN certificate, and IKEv2 credentials — and can connect via **any** protocol enabled on their network.
 
+> [!TIP]
+> **Automating Client Management with WHMCS**:
+> Instead of manually creating and managing clients, you can automate account provisioning, suspension, cancellation, and configuration delivery using the official **[PUQVPNCP WHMCS Provisioning Module](https://puqcloud.com/whmcs-module-puqvpncp.php)**.
+
 ## Clients List
 
 Navigate to **Clients > List of clients**.
