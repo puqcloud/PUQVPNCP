@@ -76,7 +76,7 @@ Displays WireGuard-related kernel messages from `journalctl`. These logs show lo
 | **Clients** | Total number of AmneziaWG clients |
 | **Online** | Number of currently connected AmneziaWG peers |
 
-If AmneziaWG or AmneziaWG Tools are not installed, or no networks are configured, an informative warning alert is displayed with repository and package installation instructions for Debian (with `build-essential dkms linux-headers-$(uname -r)`) and Ubuntu (`add-apt-repository -y ppa:amnezia/ppa`).
+If AmneziaWG or AmneziaWG Tools are not installed, or no networks are configured, an informative warning alert is displayed with repository and package installation instructions for Debian 12 (using Ubuntu 22.04 `jammy` for glibc compatibility with `.asc` keyring), Debian 13 (using `noble`), and Ubuntu (`add-apt-repository -y ppa:amnezia/ppa`).
 
 ### awg show
 

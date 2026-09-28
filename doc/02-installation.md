@@ -53,14 +53,28 @@ apt update && apt install -y wireguard wireguard-tools openvpn easy-rsa \
 
 To enable AmneziaWG, install the kernel module and tools for your distribution:
 
-**Debian (11 / 12 / 13):**
+**Debian 12 (Bookworm):**
 
-> On Debian, compiling the kernel module via DKMS requires kernel headers (`linux-headers-$(uname -r)`) and build tools. Install them before or alongside the module:
+> On **Debian 12**, the Ubuntu 22.04 (`jammy`) PPA must be used because Debian 12 has `glibc 2.36`, whereas packages from `noble` require `libc6 >= 2.38`. The keyring is saved directly in `.asc` format without needing `gpg`:
 
 ```bash
-apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
-mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/amnezia.list
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+**Debian 13 (Trixie):**
+
+> On **Debian 13**, use the Ubuntu 24.04 (`noble`) PPA:
+
+```bash
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
 apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 modprobe amneziawg
 ```
@@ -76,8 +90,9 @@ modprobe amneziawg
 *Alternative on Ubuntu (without `add-apt-repository`):*
 
 ```bash
-mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/amnezia.list
 apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 modprobe amneziawg
 ```

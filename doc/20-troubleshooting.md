@@ -164,7 +164,7 @@ On **Debian**, DKMS compilation fails if `linux-headers-$(uname -r)` and build t
 
 ```bash
 # Install kernel headers and build tools for the running kernel
-apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
 
 # Reconfigure and recompile the DKMS module
 dpkg-reconfigure amneziawg-dkms
@@ -176,13 +176,59 @@ modprobe amneziawg
 lsmod | grep amneziawg
 ```
 
-### 3. Missing repository or packages
+### 3. Dependency error on Debian 12: `Depends: libc6 (>= 2.38)`
 
-**Debian (11 / 12 / 13):**
+If `apt-get install` fails with:
+```
+The following packages have unmet dependencies:
+ amneziawg-tools : Depends: libc6 (>= 2.38) but 2.36-... is to be installed
+E: Unable to correct problems, you have held broken packages.
+```
+
+**Cause:** Debian 12 (Bookworm) uses `glibc 2.36`. Ubuntu 24.04 (`noble`) was added instead of Ubuntu 22.04 (`jammy`).
+
+**Solution:** Change `noble` to `jammy` in `/etc/apt/sources.list.d/amnezia.list`:
 ```bash
-apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
-mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/amnezia.list
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+### 4. Keyring error or `-bash: gpg: command not found`
+
+If you encounter:
+```
+-bash: gpg: command not found
+Error: Failed to parse keyring "/etc/apt/keyrings/amnezia.gpg"
+The repository '... noble InRelease' is not signed.
+```
+
+**Cause:** Minimal Debian installations do not include `gpg`/`gnupg`.
+
+**Solution:** Save the key in native ASCII `.asc` format directly without piping to `gpg`:
+```bash
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+```
+
+### 5. Repository setup by Debian version
+
+**Debian 12 (Bookworm):**
+```bash
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/amnezia.list
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+modprobe amneziawg
+```
+
+**Debian 13 (Trixie):**
+```bash
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
 apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 modprobe amneziawg
 ```
@@ -194,7 +240,7 @@ apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 modprobe amneziawg
 ```
 
-### 4. Check AmneziaWG tools
+### 6. Check AmneziaWG tools
 
 ```bash
 awg --version

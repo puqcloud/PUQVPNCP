@@ -19,24 +19,49 @@
 
 AmneziaWG requires the kernel module (`amneziawg-dkms`) and CLI tools (`amneziawg-tools`). Choose the instructions corresponding to your operating system:
 
-#### Debian (11 / 12 / 13)
+#### Debian 12 (Bookworm)
 
-> **Important for Debian:** AmneziaWG is compiled on your server as a kernel module via DKMS. On Debian, DKMS requires kernel headers (`linux-headers-$(uname -r)`) and build tools (`build-essential`). Without them, the DKMS build will fail.
-
-Copy and run the complete installation block as root:
+> **Important for Debian 12:** Debian 12 uses `glibc 2.36`. The Ubuntu 24.04 (`noble`) package requires `libc6 >= 2.38`, so attempting to use `noble` will result in broken package dependencies. You **must** use the Ubuntu 22.04 (`jammy`) PPA.
+> 
+> The keyring is saved directly in `.asc` format, so no `gpg` or `gnupg` package is required:
 
 ```bash
 # 1. Install build tools, DKMS, and current kernel headers
-apt-get update && apt-get install -y build-essential dkms linux-headers-$(uname -r)
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
 
-# 2. Add the official Amnezia PPA repository keyring and source
-mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+# 2. Add the official Amnezia PPA repository keyring (ASCII format)
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
 
-# 3. Install the DKMS module and tools
+# 3. Add Launchpad PPA source (jammy for Debian 12)
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/amnezia.list
+
+# 4. Install the DKMS module and tools
 apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 
-# 4. Load the kernel module
+# 5. Load the kernel module
+modprobe amneziawg
+```
+
+#### Debian 13 (Trixie)
+
+> On **Debian 13**, glibc is 2.40+, so the Ubuntu 24.04 (`noble`) PPA is used:
+
+```bash
+# 1. Install build tools, DKMS, and current kernel headers
+apt-get update && apt-get install -y curl build-essential dkms linux-headers-$(uname -r)
+
+# 2. Add the official Amnezia PPA repository keyring (ASCII format)
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+
+# 3. Add Launchpad PPA source (noble for Debian 13)
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+
+# 4. Install the DKMS module and tools
+apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
+
+# 5. Load the kernel module
 modprobe amneziawg
 ```
 
@@ -50,11 +75,12 @@ apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 modprobe amneziawg
 ```
 
-**Option 2: Using GPG keyring (minimal systems):**
+**Option 2: Using direct keyring (minimal systems):**
 
 ```bash
-mkdir -p /etc/apt/keyrings && curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" | gpg --dearmor --yes -o /etc/apt/keyrings/amnezia.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amnezia.gpg] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu noble main" > /etc/apt/sources.list.d/amnezia.list
+mkdir -p /etc/apt/keyrings
+curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x75C9DD72C799870E310542E24166F2C257290828" -o /etc/apt/keyrings/amnezia.asc
+echo "deb [signed-by=/etc/apt/keyrings/amnezia.asc] https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/amnezia.list
 apt-get update && apt-get install -y amneziawg-dkms amneziawg-tools
 modprobe amneziawg
 ```
