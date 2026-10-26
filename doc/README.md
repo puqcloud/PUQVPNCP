@@ -1,4 +1,4 @@
-# PUQVPNCP — Documentation v2.3.0
+# PUQVPNCP — Documentation v2.4.0
 
 
 ## Table of Contents
@@ -7,7 +7,7 @@
 
 | # | Chapter | Description |
 |---|---------|-------------|
-| 0 | [Changelog](00-changelog.md) | What's new in v2.3.0 — full release notes |
+| 0 | [Changelog](00-changelog.md) | What's new in v2.4.0 — full release notes |
 
 ### Getting Started
 
@@ -75,4 +75,4 @@ Selling VPN services or integrating with web hosting billing?
 
 ---
 
-*Documentation for PUQVPNCP v2.3.0 | [puqcloud.com](https://puqcloud.com)*
+*Documentation for PUQVPNCP v2.4.0 | [puqcloud.com](https://puqcloud.com)*

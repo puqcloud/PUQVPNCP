@@ -1,6 +1,67 @@
 # Changelog
 
 
+## v2.4.0 — October 2026
+
+**Major release** — IPAM server IP conflict resolution, backup archive ZIP integrity fix, native Telegraf metrics endpoint, comprehensive Debian 12 & 13 kernel support, WHMCS integration documentation, and automated system testing framework.
+
+---
+
+### IPAM & OpenVPN IPv6 Collision Resolution
+
+Resolved an IP address allocation conflict where server interface addresses were erroneously assigned to clients:
+
+- **Server Interface Exclusion** — the IP allocation engine (`IPAM`) now strictly reserves and excludes the server's local interface IP addresses (e.g. `...::1` on IPv6 and gateway addresses on IPv4) from being automatically assigned to new clients.
+- **CCD Configuration Partitioning** — prevents duplicate OpenVPN CCD entries sharing the server IP in dual-stack IPv4/IPv6 networks, guaranteeing collision-free routing.
+- **Client Provisioning Safety** — client deletion and re-creation no longer re-allocates previously reserved server addresses.
+
+---
+
+### Backup Archive ZIP Integrity Fix
+
+Fixed a critical archive generation bug that produced corrupted ZIP files:
+
+- **Writer Close Sequence** — corrected Go `defer` LIFO ordering in `backups.go`. Explicitly flushes and closes `zip.Writer` before closing the underlying file descriptor, ensuring Central Directory (CD) and End of Central Directory (EOCD) records are written completely.
+- **Archive Validation** — all system backup archives now pass strict verification (`zip -T` and `unzip -t`) with zero CRC errors or missing directory headers.
+- **Cross-Host Migration** — verified cross-node transfer and extraction on secondary instances.
+
+---
+
+### Local InfluxDB / Prometheus Metrics Endpoint (`/metrics`)
+
+Added a dedicated metrics route to the web server:
+
+- **Native Router Endpoint** — registered `/metrics` on the primary web server engine, delivering InfluxDB line-protocol metrics for online peers, network traffic, CPU, and RAM.
+- **Local Telegraf Integration** — resolves HTTP 404 errors during local Telegraf metric scraping when Let's Encrypt SSL is disabled or when running on custom ports (`8098`).
+- **Real-Time Monitoring** — provides zero-delay metrics scraping for external monitoring stacks (Grafana, InfluxDB, Prometheus).
+
+---
+
+### Debian 12 (Bookworm) & Debian 13 (Trixie) Support for AmneziaWG
+
+Enhanced repository management and installation scripts:
+
+- **Direct ASC Keyring Support** — updated repository provisioning to use modern detached GPG keyrings (`/usr/share/keyrings/`) without deprecated `apt-key`.
+- **Kernel Module & DKMS Automation** — streamlined automated DKMS build instructions across modern Linux kernel versions (Debian 12 Bookworm, Debian 13 Trixie, Ubuntu Jammy/Noble).
+
+---
+
+### Automated System Testing & Stress Suite
+
+Introduced a comprehensive test framework in the developer tools:
+
+- **8-Module Test Runner** — automated validation covering REST API health, IPAM allocation, live protocol handshakes (WireGuard, AmneziaWG, OpenVPN, IKEv2), bandwidth traffic shaping (`iperf3`), firewall/ipset isolation, DNS adblocking, and clean node package installation.
+- **High-Concurrency Stress Testing** — 50 simultaneous client tunnels across all 4 protocols generating continuous ICMP, HTTP, and DNS traffic with zero packet loss and low memory footprint (~50 MB RSS).
+
+---
+
+### Official WHMCS Module Documentation & Branding
+
+- **WHMCS Client Module Guide** — added complete documentation and integration guides for the official PUQVPNCP WHMCS provisioning module.
+- **Brand Standardization** — unified naming to **PUQ Software** across all configuration files, templates, and documentation.
+
+---
+
 ## v2.3.0 — September 2026
 
 **Major release** — AmneziaWG anti-censorship stealth WireGuard protocol, strict protocol package validation, reactive multi-tab network interface, and expanded REST API.

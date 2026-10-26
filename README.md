@@ -4,7 +4,7 @@
 ### Multi-Protocol VPN Server Control Panel
 
 [![License](https://img.shields.io/badge/license-Proprietary-blue.svg)](https://puqvpncp.com)
-[![Version](https://img.shields.io/badge/version-2.3.0-brightgreen.svg)](https://puqvpncp.com)
+[![Version](https://img.shields.io/badge/version-2.4.0-brightgreen.svg)](https://puqvpncp.com)
 [![Protocols](https://img.shields.io/badge/protocols-WireGuard%20%7C%20AmneziaWG%20%7C%20OpenVPN%20%7C%20IKEv2-blueviolet.svg)](https://puqvpncp.com/#protocols)
 [![Free Tier](https://img.shields.io/badge/free%20tier-Up%20to%2050%20users-orange.svg)](https://puqvpncp.com/#pricing)
 [![API](https://img.shields.io/badge/REST%20API-170%2B%20endpoints-informational.svg)](https://puqvpncp.com/api/)
@@ -62,7 +62,7 @@ Full documentation is included in the [`doc/`](doc/) directory and available onl
 
 | # | Chapter | Description |
 |---|---|---|
-| 00 | [Changelog](doc/00-changelog.md) | Release notes for v2.3.0 and past versions |
+| 00 | [Changelog](doc/00-changelog.md) | Release notes for v2.4.0 and past versions |
 | 01 | [Description](doc/01-description.md) | Product overview, features, and architecture |
 | 02 | [Installation](doc/02-installation.md) | System requirements and step-by-step setup |
 | 03 | [Initial Setup](doc/03-initial-setup.md) | System config, Let's Encrypt SSL, license |
