@@ -23,7 +23,7 @@
 
 - **4 VPN Protocols in One Panel**:
   - **WireGuard**: Modern, high-speed, kernel-accelerated cryptography.
-  - **AmneziaWG (New in v2.3)**: Anti-censorship obfuscated WireGuard with custom magic packet headers (`H1`–`H4`) and junk padding (`Jc`, `Jmin`, `Jmax`) to defeat Deep Packet Inspection (DPI).
+  - **AmneziaWG**: Anti-censorship obfuscated WireGuard with custom magic packet headers (`H1`–`H4`) and junk padding (`Jc`, `Jmin`, `Jmax`) to defeat Deep Packet Inspection (DPI).
   - **OpenVPN**: Enterprise TCP and UDP tunnels with automated internal PKI.
   - **IKEv2 / IPsec**: High-security, mobile-friendly strongSwan daemon with certificate management.
 - **Hierarchical Network Architecture**: Create networks (`10.0.0.0/24`), provision client accounts, and enable any combination of protocols per client.

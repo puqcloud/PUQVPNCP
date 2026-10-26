@@ -4,7 +4,7 @@
 The Dashboard is the main landing page after login. It provides a complete overview of the server status, VPN protocols, and services.
 
 ![Dashboard overview](img/dashboard/01-dashboard-overview.png)
-*PUQVPNCP v2.3 Dashboard — Server info, system status, 4 VPN protocols (WireGuard, AmneziaWG, OpenVPN, IKEv2), and services*
+*PUQVPNCP v2.4 Dashboard — Server info, system status, 4 VPN protocols (WireGuard, AmneziaWG, OpenVPN, IKEv2), and services*
 
 ---
 
